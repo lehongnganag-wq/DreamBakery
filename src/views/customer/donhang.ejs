@@ -1,12 +1,9 @@
 <%
-// Đảm bảo orders là một mảng để tránh lỗi vòng lặp
 const displayOrders = Array.isArray(orders) ? orders : [];
 %>
 
 <div class="order-container">
-    <h2 class="order-title">
-         Lịch sử đặt hàng
-    </h2>
+    <h2 class="order-title">Lịch sử đặt hàng</h2>
 
     <table class="order-table">
         <thead>
@@ -67,10 +64,10 @@ const displayOrders = Array.isArray(orders) ? orders : [];
                 </td>
 
                 <td>
-                    <% if(order.DaThanhToan){ %>
-                        <span class="text-paid">Đã trả</span>
+                    <% if(order.DaThanhToan || order.TrangThai === "delivered"){ %>
+                        <span class="text-success fw-bold">Đã trả</span>
                     <% } else { %>
-                        <span class="text-unpaid">Chưa trả</span>
+                        <span class="text-danger fw-bold">Chưa trả</span>
                     <% } %>
                 </td>
 
@@ -88,7 +85,7 @@ const displayOrders = Array.isArray(orders) ? orders : [];
                         <a href="/donhang/cancel/<%= order._id %>" 
                            class="btn-cancel"
                            onclick="return confirm('Bạn có chắc chắn muốn hủy đơn hàng này?')">
-                            Hủy
+                             Hủy
                         </a>
                     <% } %>
                 </td>
