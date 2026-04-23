@@ -15,7 +15,7 @@ exports.getSanpham = async (req, res) => {
             .populate("DanhMuc")
             .sort({ createdAt: -1 });
 
-        res.render("customer/Sanpham", {
+        res.render("customer/sanpham", {
             title: "Sản phẩm - Dream Bakery",
             products: products, 
             categories: categories, 
@@ -31,7 +31,6 @@ exports.getSanpham = async (req, res) => {
 
 exports.getById = async (req, res) => {
     try {
-        
         const product = await Sanpham.findById(req.params.id).populate("DanhMuc");
         
         if (!product) {
@@ -39,12 +38,12 @@ exports.getById = async (req, res) => {
         }
 
         res.render("customer/chitiet_sanpham", {
-            title: product.TenSanPham, 
+            title: product.TenSanpham, 
             product: product, 
             layout: "layout"
         });
     } catch (error) {
-        console.error("Lỗi chi tiết sản phẩm:", error);
+        console.error("🔥 Lỗi chi tiết sản phẩm:", error);
         res.status(500).send("Lỗi chi tiết sản phẩm");
     }
 };
