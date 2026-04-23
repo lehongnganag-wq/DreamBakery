@@ -8,7 +8,7 @@ const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose"); 
 
 const User = require("./models/User");
-
+console.log("NEW BUILD RUNNING...");
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
