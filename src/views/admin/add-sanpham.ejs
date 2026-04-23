@@ -1,0 +1,60 @@
+<div class="container-fluid py-4">
+    <div class="mb-3">
+        <a href="/admin/sanpham" class="text-decoration-none text-secondary">
+            <i class="fa-solid fa-arrow-left"></i> Quay lại danh sách
+        </a>
+    </div>
+
+    <div class="card border-0 shadow-sm p-4" style="border-radius: 15px;">
+        <h3 class="mb-4 text-pink" style="color: #ff4d7d;">
+            <i class="fa-solid fa-plus-circle"></i> Thêm bánh mới vào kho
+        </h3>
+        
+        <form action="/admin/sanpham/create" method="POST" enctype="multipart/form-data">
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label fw-bold">Tên sản phẩm</label>
+                    <input type="text" name="TenSanPham" class="form-control" placeholder="Ví dụ: Bánh Kem Dâu Tây" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label fw-bold">Danh mục</label>
+                    <select name="DanhMuc" class="form-select" required>
+                        <option value="" disabled selected>-- Chọn danh mục bánh --</option>
+                        <% categories.forEach(cat => { %>
+                            <option value="<%= cat._id %>"><%= cat.TenDanhMuc %></option>
+                        <% }) %>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label fw-bold">Giá bán (VNĐ)</label>
+                    <input type="number" name="Gia" class="form-control" placeholder="Ví dụ: 250000" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label fw-bold">Số lượng trong kho</label>
+                    <input type="number" name="SoLuong" class="form-control" value="0" min="0" required>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-bold">Hình ảnh sản phẩm</label>
+                <input type="file" name="HinhAnh" class="form-control" accept="image/*" required>
+                <div class="form-text">Chọn file ảnh (jpg, png, webp) từ máy tính của bạn.</div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-bold">Mô tả sản phẩm</label>
+                <textarea name="MoTa" class="form-control" rows="4" placeholder="Nhập mô tả chi tiết về bánh..."></textarea>
+            </div>
+
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-primary flex-grow-1" style="background-color: #ff4d7d; border: none; padding: 12px;">
+                    <i class="fa-solid fa-check"></i> Xác nhận thêm vào hệ thống
+                </button>
+                <a href="/admin/sanpham" class="btn btn-light border" style="padding: 12px;">Hủy bỏ</a>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,79 @@
+<div class="container mt-5">
+    <div style="max-width: 800px; margin: auto;">
+
+        <h1 class="text-center mb-2">Hỗ Trợ Khách Hàng</h1>
+        <p class="text-center text-muted">Chúng tôi luôn sẵn sàng lắng nghe bạn</p>
+
+        <h2 class="mt-5 mb-4"><i class="fa-solid fa-circle-question me-2"></i>Câu hỏi thường gặp</h2>
+
+        <div class="faq-container">
+
+            <div class="faq-item shadow-sm mb-3 bg-white rounded">
+                <div class="faq-question p-3 d-flex justify-content-between align-items-center" style="cursor: pointer;">
+                    <span class="fw-bold">Làm thế nào để đặt bánh trực tuyến?</span>
+                    <i class="fa-solid fa-chevron-down transition-icon"></i>
+                </div>
+                <div class="faq-answer p-3 border-top" style="display: none;">
+                    <p class="mb-0">
+                        Rất đơn giản! Bạn chỉ cần chọn loại bánh yêu thích → Thêm vào giỏ hàng → Kiểm tra giỏ hàng → Điền thông tin và bấm Đặt hàng.
+                    </p>
+                </div>
+            </div>
+
+            <div class="faq-item shadow-sm mb-3 bg-white rounded">
+                <div class="faq-question p-3 d-flex justify-content-between align-items-center" style="cursor: pointer;">
+                    <span class="fw-bold">Có giao hàng tận nơi không?</span>
+                    <i class="fa-solid fa-chevron-down transition-icon"></i>
+                </div>
+                <div class="faq-answer p-3 border-top" style="display: none;">
+                    <p class="mb-0">
+                        Có! Dream Bakery hỗ trợ giao hàng tận nơi trong nội thành từ 30 - 60 phút tùy vào khoảng cách địa lý.
+                    </p>
+                </div>
+            </div>
+
+            <div class="faq-item shadow-sm mb-3 bg-white rounded">
+                <div class="faq-question p-3 d-flex justify-content-between align-items-center" style="cursor: pointer;">
+                    <span class="fw-bold">Có làm bánh theo yêu cầu không?</span>
+                    <i class="fa-solid fa-chevron-down transition-icon"></i>
+                </div>
+                <div class="faq-answer p-3 border-top" style="display: none;">
+                    <p class="mb-0">
+                        Chúng mình nhận làm bánh sinh nhật, bánh sự kiện theo yêu cầu riêng. Bạn vui lòng liên hệ hotline hoặc nhắn tin fanpage để trao đổi mẫu nhé!
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="mt-5 p-4 bg-light text-center rounded-3 border">
+            <h3 class="mb-3">Bạn vẫn cần hỗ trợ?</h3>
+            <p class="mb-2">Hãy kết nối trực tiếp với đội ngũ hỗ trợ của Dream Bakery:</p>
+
+            <div class="d-flex justify-content-center gap-4 mt-3">
+                <p><i class="fa-solid fa-phone text-primary me-1"></i> <strong>Hotline:</strong> 0387.2995.60</p>
+                <p><i class="fa-solid fa-envelope text-danger me-1"></i> <strong>Email:</strong> lehongngan.ag@gmail.com</p>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    document.querySelectorAll('.faq-question').forEach(question => {
+        question.addEventListener('click', () => {
+            const item = question.parentElement;
+            const answer = item.querySelector('.faq-answer');
+            const icon = question.querySelector('.fa-chevron-down');
+
+            // Đóng mở câu trả lời
+            if (answer.style.display === "block") {
+                answer.style.display = "none";
+                icon.style.transform = "rotate(0deg)";
+            } else {
+                answer.style.display = "block";
+                icon.style.transform = "rotate(180deg)";
+            }
+        });
+    });
+</script>

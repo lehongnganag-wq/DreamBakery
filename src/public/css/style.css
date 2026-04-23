@@ -1,0 +1,218 @@
+body {
+  font-family: Arial;
+  margin: 0;
+}
+
+/* HEADER */
+.header {
+  background: #ff6f61;
+  color: white;
+  padding: 15px;
+  text-align: center;
+}
+
+/* NAV */
+.nav {
+  background: #333;
+  padding: 10px;
+  text-align: center;
+}
+
+.nav a {
+  color: white;
+  margin: 0 15px;
+  text-decoration: none;
+}
+
+.nav a:hover {
+  color: yellow;
+}
+
+/* CONTAINER */
+.container {
+  padding: 20px;
+  text-align: center;
+}
+
+/* BUTTON */
+.btn {
+  padding: 10px 20px;
+  background: #ff6f61;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+}
+
+/* FORM */
+.form {
+  display: flex;
+  flex-direction: column;
+  width: 250px;
+  margin: auto;
+}
+
+.form input {
+  margin: 10px 0;
+  padding: 8px;
+}
+
+.form button {
+  padding: 10px;
+  background: #ff6f61;
+  color: white;
+  border: none;
+}
+
+/* PRODUCT */
+.product-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.product {
+  border: 1px solid #ccc;
+  padding: 15px;
+  margin: 10px;
+  width: 200px;
+}
+/* CONTAINER */
+.order-container {
+  max-width: 1100px;
+  margin: 40px auto;
+  background: white;
+  padding: 20px;
+  border-radius: 15px;
+}
+
+/* TITLE */
+.order-title {
+  color: #5d4037;
+  margin-bottom: 20px;
+}
+
+/* TABLE */
+.order-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.order-table th {
+  background: #5d4037;
+  color: white;
+  padding: 12px;
+}
+
+.order-table td {
+  padding: 12px;
+  text-align: center;
+  border-bottom: 1px solid #eee;
+}
+
+/* PRICE */
+.price {
+  color: #e67e22;
+  font-weight: bold;
+}
+
+/* STATUS */
+.status {
+  padding: 5px 10px;
+  border-radius: 15px;
+  font-size: 12px;
+}
+
+.status.pending {
+  background: #eee;
+}
+
+.status.shipping {
+  background: #d1ecf1;
+  color: #0c5460;
+}
+
+.status.done {
+  background: #d4edda;
+  color: #155724;
+}
+
+.status.cancel {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+/* PAYMENT */
+.paid {
+  color: green;
+}
+
+.unpaid {
+  color: red;
+}
+
+/* ACTION */
+.view {
+  color: #3498db;
+}
+
+.cancel {
+  color: #e74c3c;
+}
+
+/* EMPTY */
+.empty {
+  padding: 30px;
+  color: #888;
+}
+
+    /* Bạn có thể copy cái này vào src/public/style.css của bạn */
+.custom-card { border-radius: 20px; overflow: hidden; }
+.cart-img-thumb { width: 65px; height: 65px; object-fit: cover; border-radius: 12px; border: 1px solid #eee; }
+.btn-remove { color: #ccc; transition: 0.3s; padding: 5px; }
+.btn-remove:hover { color: #dc3545; }
+.btn-checkout { background-color: #ff4d7d; color: white; border-radius: 50px; border: none; transition: 0.3s; }
+.btn-checkout:hover { background-color: #e6396a; transform: scale(1.05); color: white; }
+.btn-confirm { background-color: #ffbc0d; color: white; border-radius: 15px; border: none; font-size: 1.1rem; }
+.btn-confirm:hover { background-color: #e6a800; color: white; }
+.form-custom { border-radius: 10px; border: 1px solid #eee; padding: 12px; }
+.form-custom:focus { border-color: #ff4d7d; box-shadow: none; background: #fff9fa; }
+.summary-box { background-color: #fcfcfc; border: 1px dashed #ddd; }
+@keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.03); }
+        100% { transform: scale(1); }
+    }
+    .pulse-button {
+        animation: pulse 2s infinite;
+    }
+    .table-light { background-color: #fff0f3 !important; }
+    .form-control:focus { border-color: #ff4d7d; box-shadow: 0 0 0 0.25rem rgba(255, 77, 125, 0.25); }
+    .input-group-sm .btn { padding: 0.25rem 0.5rem; }
+ .border-dashed { border-style: dashed !important; }
+    .pulse-button {
+        animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+        0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 77, 125, 0.7); }
+        70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(255, 77, 125, 0); }
+        100% { transform: scale(1); }
+    }
+    input::placeholder { font-size: 0.9rem; opacity: 0.6; }
+    /* Màu sắc cho các Badge trạng thái */
+.status-badge {
+    padding: 4px 12px;
+    border-radius: 15px;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.status-pending { background-color: #fff3cd; color: #856404; } 
+.status-shipping { background-color: #d1ecf1; color: #0c5460; } 
+.status-done { background-color: #d4edda; color: #155724; }   
+.status-cancel { background-color: #f8d7da; color: #721c24; }   
+
+
+.price-cell { color: #ff4d7d; font-weight: bold; }
+.text-paid { color: #28a745; font-weight: bold; }
+.text-unpaid { color: #dc3545; font-weight: bold; }
+.order-id { font-weight: bold; color: #333; }

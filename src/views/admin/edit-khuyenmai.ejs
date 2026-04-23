@@ -1,0 +1,75 @@
+<div class="container-fluid py-4">
+    <div class="mb-3">
+        <a href="/admin/khuyenmai" class="text-decoration-none text-secondary">
+            <i class="fa-solid fa-arrow-left"></i> Quay lại danh sách
+        </a>
+    </div>
+
+    <div class="card border-0 shadow-sm p-4" style="border-radius: 15px;">
+        <h3 class="mb-4" style="color: #ff4d7d;">
+            <i class="fa-solid fa-pen-to-square"></i> Chỉnh sửa khuyến mãi
+        </h3>
+        
+        <form action="/admin/khuyenmai/edit/<%= promo._id %>" method="POST">
+            <div class="mb-3">
+                <label class="form-label fw-bold">Tên chương trình</label>
+                <input type="text" name="TenKhuyenMai" class="form-control" value="<%= promo.TenKhuyenMai %>" required>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label fw-bold">Mã Code</label>
+                    <input type="text" name="MaCode" class="form-control" value="<%= promo.MaCode %>" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label fw-bold">Số lượng lượt dùng</label>
+                    <input type="number" name="SoLuong" class="form-control" value="<%= promo.SoLuong %>">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label class="form-label fw-bold">Giảm (%)</label>
+                    <input type="number" name="PhanTramGiam" class="form-control" value="<%= promo.PhanTramGiam %>">
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label class="form-label fw-bold">Giảm tiền mặt (VNĐ)</label>
+                    <input type="number" name="SoTienGiam" class="form-control" value="<%= promo.SoTienGiam %>">
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label class="form-label fw-bold">Đơn tối thiểu (VNĐ)</label>
+                    <input type="number" name="GiaTriToiThieu" class="form-control" value="<%= promo.GiaTriToiThieu %>">
+                </div>
+            </div>
+
+            <div class="row">
+                <% 
+                    // Hàm phụ để format ngày về dạng YYYY-MM-DD cho input date
+                    const formatDate = (date) => date ? new Date(date).toISOString().split('T')[0] : '';
+                %>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label fw-bold">Ngày bắt đầu</label>
+                    <input type="date" name="NgayBatDau" class="form-control" value="<%= formatDate(promo.NgayBatDau) %>" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label fw-bold">Ngày kết thúc</label>
+                    <input type="date" name="NgayKetThuc" class="form-control" value="<%= formatDate(promo.NgayKetThuc) %>" required>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-bold">Trạng thái</label>
+                <select name="TrangThai" class="form-select">
+                    <option value="true" <%= promo.TrangThai ? 'selected' : '' %>>Đang bật</option>
+                    <option value="false" <%= !promo.TrangThai ? 'selected' : '' %>>Đã tắt</option>
+                </select>
+            </div>
+
+            <div class="mt-4">
+                <button type="submit" class="btn btn-primary w-100" style="background-color: #ff4d7d; border: none; padding: 12px;">
+                    <i class="fa-solid fa-save"></i> Cập nhật ngay
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

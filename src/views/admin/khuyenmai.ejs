@@ -1,0 +1,68 @@
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="text-pink" style="color: #ff4d7d;"><i class="fa-solid fa-ticket"></i> Quản lý Khuyến mãi</h3>
+        <a href="/admin/khuyenmai/create" class="btn btn-primary" style="background-color: #ff4d7d; border: none;">
+            <i class="fa-solid fa-plus"></i> Thêm mã mới
+        </a>
+    </div>
+
+    <div class="card border-0 shadow-sm">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="bg-light">
+                    <tr>
+                        <th>Thông tin mã</th>
+                        <th>Mức giảm</th>
+                        <th>Thời hạn</th>
+                        <th>Lượt dùng</th>
+                        <th>Trạng thái</th>
+                        <th>Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% if(promos && promos.length > 0) { %>
+                        <% promos.forEach(p => { %>
+                            <tr>
+                                <td>
+                                    <strong><%= p.TenKhuyenMai %></strong><br>
+                                    <span class="badge bg-light text-dark border mt-1"><%= p.MaCode %></span>
+                                </td>
+                                <td>
+                                    <span class="text-danger fw-bold">
+                                        <%= p.PhanTramGiam > 0 ? p.PhanTramGiam + '%' : p.SoTienGiam.toLocaleString() + 'đ' %>
+                                    </span><br>
+                                    <small class="text-muted">Đơn từ: <%= p.GiaTriToiThieu.toLocaleString() %>đ</small>
+                                </td>
+                                <td>
+                                    <small>Từ: <%= new Date(p.NgayBatDau).toLocaleDateString('vi-VN') %></small><br>
+                                    <small>Đến: <%= new Date(p.NgayKetThuc).toLocaleDateString('vi-VN') %></small>
+                                </td>
+                                <td><%= p.DaSuDung %> / <%= p.SoLuong %></td>
+                                <td>
+                                    <a href="/admin/khuyenmai/toggle/<%= p._id %>" class="text-decoration-none">
+                                        <span class="badge <%= p.TrangThai ? 'bg-success' : 'bg-secondary' %>">
+                                            <%= p.TrangThai ? 'Đang bật' : 'Đã tắt' %>
+                                        </span>
+                                    </a>
+                                </td>
+                                <td>
+                                    <div class="d-flex gap-2">
+                                        <a href="/admin/khuyenmai/edit/<%= p._id %>" class="btn btn-sm btn-outline-warning border-0">
+                                            <i class="fa-solid fa-pen-to-square"></i>
+                                        </a>
+
+                                        <a href="/admin/khuyenmai/delete/<%= p._id %>" class="btn btn-sm btn-outline-danger border-0" onclick="return confirm('Bạn có chắc muốn xóa mã này?')">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        <% }) %>
+                    <% } else { %>
+                        <tr><td colspan="6" class="text-center py-4 text-muted">Chưa có mã giảm giá nào</td></tr>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

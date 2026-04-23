@@ -1,0 +1,88 @@
+<div class="dashboard-header-text">
+    <h2><i class="fa-solid fa-chart-line"></i> Tổng quan doanh thu</h2>
+    <p>Chào mừng trở lại, <strong>admin!</strong></p>
+</div>
+
+<div class="stats-grid">
+    <div class="card-stat card-pink">
+        <div class="card-title">DOANH THU TỔNG</div>
+        <div class="card-value">
+            <%= typeof totalRevenue !== 'undefined' ? totalRevenue.toLocaleString() : 0 %>đ
+        </div>
+        <div class="card-footer"> Hôm nay: <%= new Date().toLocaleDateString('vi-VN') %></div>
+    </div>
+
+    <div class="card-stat card-orange">
+        <div class="card-title">ĐƠN THÀNH CÔNG</div>
+        <div class="card-value">
+            <%= typeof orderCount !== 'undefined' ? orderCount : 0 %> đơn
+        </div>
+        <div class="card-footer">Chỉ tính đơn Hoàn tất</div>
+    </div>
+
+    <div class="card-stat card-blue">
+        <div class="card-title">KHÁCH HÀNG</div>
+        <div class="card-value">
+            <%= typeof userCount !== 'undefined' ? userCount : 0 %>
+        </div>
+        <div class="card-footer">Tài khoản đăng ký</div>
+    </div>
+
+    <div class="card-stat card-green">
+        <div class="card-title">SẢN PHẨM</div>
+        <div class="card-value">
+            <%= typeof productCount !== 'undefined' ? productCount : 0 %> món
+        </div>
+        <div class="card-footer">Đang có trong kho</div>
+    </div>
+</div>
+
+<div class="dashboard-main-content">
+    <div class="table-container shadow-light">
+        <div class="table-header">
+            <h3><i class="fa-solid fa-clock-rotate-left"></i> Đơn hàng vừa đặt</h3>
+        </div>
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>STT</th>
+                    <th>KHÁCH HÀNG</th>
+                    <th>TỔNG TIỀN</th>
+                    <th>TRẠNG THÁI</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% if (typeof recentOrders !== 'undefined' && recentOrders.length > 0) { %>
+                    <% recentOrders.forEach((order, index) => { %>
+                        <tr>
+                            <td><%= (index + 1).toString().padStart(2, '0') %></td>
+                            <td><%= order.NguoiDung ? order.NguoiDung.HoVaTen : 'Khách vãng lai' %></td>
+                            <td class="text-danger fw-bold">
+                                <%= (order.TongTien || 0).toLocaleString() %> VNĐ
+                            </td>
+                            <td><span class="badge badge-success">Hoàn tất</span></td>
+                        </tr>
+                    <% }) %>
+                <% } else { %>
+                    <tr>
+                        <td colspan="4" class="text-center py-4 text-muted">Chưa có đơn hàng nào mới</td>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="shortcut-container">
+        <div class="shortcut-card shadow-light">
+            <h3><i class="fa-solid fa-bolt"></i> Phím tắt nhanh</h3>
+            <div class="shortcut-list">
+                <a href="/admin/sanpham/create" class="shortcut-item btn-soft-pink">
+                    <i class="fa-solid fa-circle-plus"></i> Đăng thêm bánh mới
+                </a>
+                <a href="/admin/donhang" class="shortcut-item btn-soft-orange">
+                    <i class="fa-solid fa-truck-fast"></i> Kiểm tra đơn hàng mới
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

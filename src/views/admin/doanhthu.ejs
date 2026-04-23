@@ -1,0 +1,48 @@
+<h2 class="mb-4">💰 Doanh thu</h2>
+
+<!-- CARD TỔNG DOANH THU -->
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <h4>Tổng doanh thu</h4>
+        <h2 class="text-success">
+            <%= totalRevenue.toLocaleString() %> ₫
+        </h2>
+    </div>
+</div>
+
+<!-- BẢNG ĐƠN HÀNG ĐÃ GIAO -->
+<div class="card shadow-sm">
+    <div class="card-body">
+        <h5>📦 Danh sách đơn hàng đã giao</h5>
+
+        <table class="table table-bordered mt-3">
+            <thead>
+                <tr>
+                    <th>Mã đơn</th>
+                    <th>Khách hàng</th>
+                    <th>Ngày đặt</th>
+                    <th>Tổng tiền</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <% if (orders && orders.length > 0) { %>
+                    <% orders.forEach(order => { %>
+                        <tr>
+                            <td><%= order._id.toString().slice(-6) %></td>
+                            <td><%= order.NguoiDung?.HoVaTen || "Không có" %></td>
+                            <td><%= new Date(order.createdAt).toLocaleDateString() %></td>
+                            <td class="text-success">
+                                <%= order.TongTien.toLocaleString() %> ₫
+                            </td>
+                        </tr>
+                    <% }) %>
+                <% } else { %>
+                    <tr>
+                        <td colspan="4" class="text-center">Chưa có đơn hàng</td>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
+    </div>
+</div>

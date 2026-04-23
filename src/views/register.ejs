@@ -1,0 +1,51 @@
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="card shadow-lg border-0 rounded-lg mt-5">
+                <div class="card-header bg-primary text-white text-center py-3">
+                    <h3 class="font-weight-light my-1">Tạo tài khoản mới</h3>
+                </div>
+                <div class="card-body p-4">
+                    
+                    <% if (typeof error !== 'undefined' && error) { %>
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <%= error %>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    <% } %>
+
+                    <form action="/auth/register" method="POST">
+                        <div class="form-floating mb-3">
+                            <input class="form-control" id="inputName" type="text" name="name" placeholder="Họ và tên" required />
+                            <label for="inputName">Họ và tên</label>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <input class="form-control" id="inputEmail" type="email" name="email" placeholder="name@example.com" required />
+                            <label for="inputEmail">Địa chỉ Email</label>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <input class="form-control" id="inputPassword" type="password" name="password" placeholder="Mật khẩu" required minlength="6" />
+                            <label for="inputPassword">Mật khẩu (ít nhất 6 ký tự)</label>
+                        </div>
+
+                        <div class="mt-4 mb-0">
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary btn-block py-2">Xác nhận đăng ký</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer text-center py-3">
+                    <div class="small">
+                        <a href="/auth/login" class="text-decoration-none">Đã có tài khoản? Đi đến đăng nhập</a>
+                    </div>
+                    <div class="small mt-1">
+                        <a href="/" class="text-muted text-decoration-none"><i class="fas fa-home"></i> Quay về trang chủ</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

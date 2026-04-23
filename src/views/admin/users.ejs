@@ -1,0 +1,26 @@
+<div class="admin-header-flex">
+    <h2><i class="fa-solid fa-user-group"></i> Danh sách thành viên</h2>
+</div>
+
+<div class="table-card shadow">
+    <table>
+        <thead>
+            <tr>
+                <th>HỌ TÊN</th>
+                <th>EMAIL</th>
+                <th>VAI TRÒ</th>
+                <th>NGÀY ĐĂNG KÝ</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% users.forEach(user => { %>
+            <tr>
+                <td><%= user.name %></td>
+                <td><%= user.email %></td>
+                <td><span class="role-badge"><%= user.role %></span></td>
+                <td><%= new Date(user.createdAt).toLocaleDateString('vi-VN') %></td>
+            </tr>
+            <% }) %>
+        </tbody>
+    </table>
+</div>

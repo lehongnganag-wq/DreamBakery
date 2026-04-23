@@ -1,0 +1,120 @@
+<div class="container-fluid mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><i class="fa-solid fa-file-invoice"></i> Chi tiết đơn hàng</h2>
+        <a href="/admin/donhang" class="btn btn-secondary btn-sm">
+            <i class="fa-solid fa-arrow-left"></i> Quay lại danh sách
+        </a>
+    </div>
+
+    <% if (order) { %>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card shadow-sm mb-4 border-0">
+                <div class="card-header bg-primary text-white fw-bold">
+                    <i class="fa-solid fa-user"></i> Thông tin đơn hàng
+                </div>
+                <div class="card-body">
+                    <p class="mb-2"><strong>Mã đơn:</strong> 
+                        <span class="text-primary fw-bold">#<%= order._id.toString().toUpperCase().slice(-6) %></span>
+                    </p>
+                    <p class="mb-2"><strong>Khách hàng:</strong> 
+                        <%= order.NguoiDung ? order.NguoiDung.HoTen : 'Khách vãng lai' %>
+                    </p>
+                    <p class="mb-2"><strong>Ngày đặt:</strong> 
+                        <%= order.createdAt ? order.createdAt.toLocaleString('vi-VN') : 'N/A' %>
+                    </p>
+                    <p class="mb-0"><strong>Trạng thái:</strong> 
+                        <% 
+                            let badgeClass = 'bg-secondary';
+                            if(order.TrangThai === 'pending') badgeClass = 'bg-warning text-dark';
+                            if(order.TrangThai === 'shipping') badgeClass = 'bg-info';
+                            if(order.TrangThai === 'delivered') badgeClass = 'bg-success';
+                            if(order.TrangThai === 'cancelled') badgeClass = 'bg-danger';
+                        %>
+                        <span class="badge <%= badgeClass %>"><%= order.TrangThai %></span>
+                    </p>
+                </div>
+            </div>
+            
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+                    <form action="/admin/donhang/update-status" method="POST">
+                        <input type="hidden" name="orderId" value="<%= order._id %>">
+                        <label class="form-label fw-bold small text-uppercase text-muted">Cập nhật trạng thái</label>
+                        <div class="input-group">
+                            <select name="status" class="form-select form-select-sm">
+                                <option value="pending" <%= order.TrangThai === 'pending' ? 'selected' : '' %>>Chờ xử lý (Pending)</option>
+                                <option value="shipping" <%= order.TrangThai === 'shipping' ? 'selected' : '' %>>Đang giao (Shipping)</option>
+                                <option value="delivered" <%= order.TrangThai === 'delivered' ? 'selected' : '' %>>Đã giao (Delivered)</option>
+                                <option value="cancelled" <%= order.TrangThai === 'cancelled' ? 'selected' : '' %>>Đã hủy (Cancelled)</option>
+                            </select>
+                            <button class="btn btn-primary btn-sm" type="submit">Lưu</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-dark text-white fw-bold">
+                    <i class="fa-solid fa-cake-candles"></i> Sản phẩm đã đặt
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="table-light text-uppercase small fw-bold">
+                                <tr>
+                                    <th class="ps-3">Ảnh</th>
+                                    <th>Tên sản phẩm</th>
+                                    <th class="text-center">Số lượng</th>
+                                    <th class="text-end">Đơn giá</th>
+                                    <th class="text-end pe-3">Thành tiền</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% order.DanhSachSanPham.forEach(item => { %>
+                                    <tr>
+                                        <td class="ps-3">
+                                            <img src="<%= (item.SanPham && item.SanPham.HinhAnh) ? item.SanPham.HinhAnh : '/images/no-image.png' %>" 
+                                                 width="60" height="60" class="rounded shadow-sm" style="object-fit: cover;">
+                                        </td>
+                                        <td>
+                                            <div class="fw-bold"><%= item.SanPham ? item.SanPham.TenSanPham : 'Sản phẩm không còn tồn tại' %></div>
+                                            <small class="text-muted">Mã SP: <%= item.SanPham ? item.SanPham._id.toString().slice(-6) : 'N/A' %></small>
+                                        </td>
+                                        <td class="text-center fw-bold text-secondary">x<%= item.SoLuong %></td>
+                                        
+                                        <% 
+                                           // Logic sửa lỗi hiện 0 VNĐ: Lấy giá từ item.Gia, nếu null thì lấy từ SanPham liên kết
+                                           let singlePrice = item.Gia || (item.SanPham ? item.SanPham.Gia : 0); 
+                                        %>
+                                        <td class="text-end text-muted">
+                                            <%= singlePrice.toLocaleString('vi-VN') %> VNĐ
+                                        </td>
+                                        <td class="text-end pe-3 fw-bold text-dark">
+                                            <%= (singlePrice * item.SoLuong).toLocaleString('vi-VN') %> VNĐ
+                                        </td>
+                                    </tr>
+                                <% }) %>
+                            </tbody>
+                            <tfoot class="table-light">
+                                <tr>
+                                    <td colspan="4" class="text-end fw-bold py-3 fs-5">Tổng cộng thanh toán:</td>
+                                    <td class="text-end pe-3 py-3 text-danger fw-bold fs-5">
+                                        <%= (order.TongTien || 0).toLocaleString('vi-VN') %> VNĐ
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <% } else { %>
+        <div class="alert alert-warning border-0 shadow-sm">
+            <i class="fa-solid fa-triangle-exclamation"></i> Không tìm thấy dữ liệu đơn hàng này.
+        </div>
+    <% } %>
+</div>

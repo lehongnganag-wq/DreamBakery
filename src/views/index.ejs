@@ -1,0 +1,52 @@
+<section class="hero text-center mb-5 py-5" style="background-color: #fff5f7; border-radius: 20px;">
+    <h2 class="fw-bold" style="color: #ff4d7d;">Chào mừng bạn đến với thiên đường bánh ngọt 🎉</h2>
+    <p class="text-muted">Bánh tươi mỗi ngày - Trao gửi yêu thương qua từng hương vị</p>
+</section>
+
+<div class="container">
+    <main class="product-grid row">
+        <% if (typeof products !== 'undefined' && products !== null) { %>
+            
+            <% if (products.length > 0) { %>
+                <% products.forEach(item => { %>
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100 shadow-sm border-0" style="border-radius: 15px; overflow: hidden;">
+                            
+                            <img src="<%= item.HinhAnh %>" 
+                                 class="card-img-top" 
+                                 alt="<%= item.TenSanPham %>"
+                                 style="height: 250px; object-fit: cover;"
+                                 onerror="this.onerror=null; this.src='https://placehold.co/600x400?text=Loi+Anh+Thuc+Te';">
+                            
+                            <div class="card-body text-center">
+                                <h4 class="fw-bold"><%= item.TenSanPham %></h4>
+                                
+                                <p class="price text-danger fw-bold fs-5">
+                                    <%= (item.Gia || 0).toLocaleString() %> VNĐ
+                                </p>
+                                
+                                <form action="/cart/add" method="POST"> 
+                                    <input type="hidden" name="productId" value="<%= item._id %>">
+                                    <button type="submit" class="btn btn-primary w-100" style="background-color: #ff4d7d; border: none; padding: 10px;">
+                                        <i class="fa-solid fa-cart-plus"></i> Thêm vào giỏ
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                <% }) %>
+            <% } else { %>
+                <div class="col-12 text-center py-5">
+                    <i class="fa-solid fa-box-open fs-1 text-muted mb-3"></i>
+                    <p class="text-muted">Hiện tại chưa có sản phẩm nào được bày bán.</p>
+                </div>
+            <% } %>
+
+        <% } else { %>
+            <div class="col-12 text-center py-5">
+                <p class="text-danger fw-bold">Không thể kết nối với dữ liệu sản phẩm.</p>
+                <p class="text-muted">Vui lòng kiểm tra lại Controller và Route.</p>
+            </div>
+        <% } %>
+    </main>
+</div>

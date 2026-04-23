@@ -1,0 +1,63 @@
+<div class="container-fluid py-4">
+    <div class="mb-3">
+        <a href="/admin/khuyenmai" class="text-decoration-none text-secondary">
+            <i class="fa-solid fa-arrow-left"></i> Quay lại danh sách
+        </a>
+    </div>
+
+    <div class="card border-0 shadow-sm p-4" style="border-radius: 15px;">
+        <h3 class="mb-4" style="color: #ff4d7d;">
+            <i class="fa-solid fa-plus-circle"></i> Tạo chương trình khuyến mãi
+        </h3>
+        
+        <form action="/admin/khuyenmai/create" method="POST">
+            <div class="mb-3">
+                <label class="form-label fw-bold">Tên chương trình</label>
+                <input type="text" name="TenKhuyenMai" class="form-control" placeholder="Ví dụ: Ưu đãi mùa hè" required>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label fw-bold">Mã Code (Viết liền không dấu)</label>
+                    <input type="text" name="MaCode" class="form-control" placeholder="Ví dụ: SUMMER2024" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label fw-bold">Số lượng lượt dùng</label>
+                    <input type="number" name="SoLuong" class="form-control" value="0" min="0">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label class="form-label fw-bold">Giảm (%)</label>
+                    <input type="number" name="PhanTramGiam" class="form-control" value="0" min="0" max="100">
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label class="form-label fw-bold">Hoặc giảm tiền mặt (VNĐ)</label>
+                    <input type="number" name="SoTienGiam" class="form-control" value="0" min="0">
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label class="form-label fw-bold">Đơn hàng tối thiểu (VNĐ)</label>
+                    <input type="number" name="GiaTriToiThieu" class="form-control" value="0" min="0">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label fw-bold">Ngày bắt đầu</label>
+                    <input type="date" name="NgayBatDau" class="form-control" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label fw-bold">Ngày kết thúc</label>
+                    <input type="date" name="NgayKetThuc" class="form-control" required>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <button type="submit" class="btn btn-primary w-100" style="background-color: #ff4d7d; border: none; padding: 12px;">
+                    <i class="fa-solid fa-check"></i> Lưu khuyến mãi
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,177 @@
+<% let total = 0; %>
+
+<div class="container mt-5 mb-5">
+    <div class="row g-4">
+        <div class="col-lg-8">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h3 class="fw-bold m-0" style="color: #ff4d7d;">
+                    <i class="fa-solid fa-cart-shopping me-2"></i>Giỏ hàng của bạn
+                </h3>
+                <a href="/sanpham" class="btn btn-outline-danger btn-sm border-0 fw-bold"> Tiếp tục mua sắm</a>
+            </div>
+            
+            <% if (cart && cart.items && cart.items.length > 0) { %>
+                <div class="card shadow border-0 overflow-hidden" style="border-radius: 20px;">
+                    <div class="card-body p-0">
+                        <table class="table align-middle mb-0">
+                            <thead style="background-color: #fff0f3; color: #ff4d7d;">
+                                <tr>
+                                    <th class="ps-4 py-3">Bánh</th>
+                                    <th>Giá</th>
+                                    <th style="width: 120px;">Số lượng</th>
+                                    <th>Thành tiền</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% cart.items.forEach(item => { %>
+                                    <% total += item.product.price * item.quantity; %>
+                                    <tr>
+                                        <td class="ps-4">
+                                            <div class="d-flex align-items-center py-2">
+                                                <img src="/images/<%= item.product.HinhAnh %>" 
+                                                     class="rounded-3"
+                                                     style="width: 70px; height: 70px; object-fit: cover;"
+                                                     onerror="this.src='https://placehold.co/70x70?text=Dream+Bakery'">
+                                                <div class="ms-3">
+                                                    <p class="fw-bold mb-0"><%= item.product.name %></p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td><%= item.product.price.toLocaleString() %>đ</td>
+                                        <td>
+                                            <form action="/giohang/update" method="POST" class="d-flex">
+                                                <input type="hidden" name="productId" value="<%= item.product._id %>">
+                                                <input type="number" name="quantity" value="<%= item.quantity %>" min="1" class="form-control form-control-sm text-center">
+                                                <button class="btn btn-danger btn-sm ms-1" type="submit">Lưu</button>
+                                            </form>
+                                        </td>
+                                        <td class="text-danger fw-bold"><%= (item.product.price * item.quantity).toLocaleString() %>đ</td>
+                                        <td class="pe-4 text-end">
+                                            <a href="/giohang/remove/<%= item.product._id %>" class="text-danger"><i class="fa-solid fa-trash"></i></a>
+                                        </td>
+                                    </tr>
+                                <% }) %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="text-end mt-4">
+                    <span class="text-muted fw-bold">TỔNG TIỀN:</span>
+                    <h2 class="fw-bold text-danger m-0"><%= total.toLocaleString() %> đ</h2>
+                    <button onclick="toggleCheckout()" class="btn btn-lg px-5 mt-3 text-white fw-bold shadow" 
+                            style="background: #ff4d7d; border-radius: 50px; border:none;">
+                        THANH TOÁN NGAY
+                    </button>
+                </div>
+            <% } %>
+        </div>
+
+        <div class="col-lg-4" id="checkout-right-section" style="display: none;">
+            <div class="card shadow-lg border-0" style="border-radius: 25px;">
+                <div class="p-4 text-center text-white" style="background: #ffa500; border-radius: 25px 25px 0 0;">
+                    <h4 class="fw-bold m-0">Giao hàng tận tim</h4>
+                </div>
+                <div class="card-body p-4">
+                    
+                    <div class="mb-4 p-3 border border-danger border-dashed rounded-3 bg-white text-center">
+                        <label class="form-label small fw-bold text-danger">MÃ GIẢM GIÁ</label>
+                        <div class="input-group">
+                            <input type="text" id="couponCode" class="form-control border-danger" placeholder="Nhập mã...">
+                            <button class="btn btn-danger" type="button" onclick="applyCoupon()">ÁP DỤNG</button>
+                        </div>
+                        <div id="couponMsg" class="small mt-2 fw-bold"></div>
+                    </div>
+
+                    <form action="/donhang/checkout" method="POST">
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold text-danger">TÊN KHÁCH HÀNG</label>
+                            <input type="text" name="customerName" class="form-control border-warning" placeholder="Nhập tên của bạn..." required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold text-danger">ĐỊA CHỈ NHẬN BÁNH</label>
+                            <input type="text" name="address" class="form-control border-warning" placeholder="Số nhà, tên đường..." required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold text-danger">SỐ ĐIỆN THOẠI</label>
+                            <input type="tel" name="phone" class="form-control border-warning" placeholder="Nhập số điện thoại..." required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold text-danger">LỜI NHẮN CHO BẾP</label>
+                            <textarea name="note" class="form-control border-warning" rows="2" placeholder="Ví dụ: Đừng lấy hành..."></textarea>
+                        </div>
+                        
+                        <div class="p-3 bg-light rounded-3 mb-3 border">
+                            <div class="d-flex justify-content-between small text-muted">
+                                <span>Tạm tính:</span>
+                                <span><%= total.toLocaleString() %> đ</span>
+                            </div>
+                            <div class="d-flex justify-content-between small text-success fw-bold">
+                                <span>Giảm giá:</span>
+                                <span id="discountText">- 0 đ</span>
+                            </div>
+                            <hr>
+                            <div class="d-flex justify-content-between fw-bold fs-5 text-danger">
+                                <span>Tổng cộng:</span>
+                                <span id="finalTotalDisplay"><%= total.toLocaleString() %> đ</span>
+                            </div>
+                        </div>
+
+                        <input type="hidden" name="discountValue" id="discountValueInput" value="0">
+                        <button type="submit" class="btn btn-warning w-100 py-3 fw-bold text-white shadow" style="border-radius: 50px; background: #ffa500; border:none;">
+                            XÁC NHẬN ĐẶT BÁNH 
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function toggleCheckout() {
+        document.getElementById('checkout-right-section').style.display = 'block';
+        window.scrollTo({ top: 300, behavior: 'smooth' });
+    }
+
+    // DANH SÁCH MÃ GIẢM GIÁ ĐƯỢC CHẤP NHẬN
+    const VALID_COUPONS = {
+        "HEVUIIVE": 20, // Giảm 20%
+        "DREAM": 10,
+        "GIAM50": 50
+    };
+
+    function applyCoupon() {
+        const input = document.getElementById('couponCode');
+        const code = input.value.trim().toUpperCase(); // Chuyển sang chữ hoa để so sánh
+        const msg = document.getElementById('couponMsg');
+        const subtotal = parseInt('<%= total %>');
+
+        if (VALID_COUPONS[code]) {
+            const percent = VALID_COUPONS[code];
+            const discountAmount = (subtotal * percent) / 100;
+            const finalTotal = subtotal - discountAmount;
+
+            // Cập nhật giao diện tiền tệ
+            document.getElementById('discountText').innerText = "- " + discountAmount.toLocaleString() + " đ";
+            document.getElementById('finalTotalDisplay').innerText = finalTotal.toLocaleString() + " đ";
+            document.getElementById('discountValueInput').value = discountAmount;
+
+            msg.className = "small mt-2 fw-bold text-success";
+            msg.innerText = "✓ Mã " + code + " đã được ghi nhận! (Giảm " + percent + "%)";
+        } else {
+            msg.className = "small mt-2 fw-bold text-danger";
+            msg.innerText = "✘ Mã này không đúng hoặc đã hết hạn!";
+            
+            // Reset lại số tiền nếu nhập sai
+            document.getElementById('discountText').innerText = "- 0 đ";
+            document.getElementById('finalTotalDisplay').innerText = subtotal.toLocaleString() + " đ";
+            document.getElementById('discountValueInput').value = 0;
+        }
+    }
+</script>
+
+<style>
+    .border-dashed { border-style: dashed !important; }
+</style>

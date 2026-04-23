@@ -1,0 +1,78 @@
+<div class="admin-grid-2">
+    <div class="table-card shadow-light">
+        <h3 class="mb-4">Tạo danh mục mới</h3>
+        <form action="/admin/danhmuc/create" method="POST">
+            <div class="mb-3">
+                <label class="form-label fw-bold">Tên danh mục</label>
+                <input type="text" name="TenDanhMuc" class="form-control" placeholder="VD: Bánh Kem Sinh Nhật" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label fw-bold">Mô tả (nếu có)</label>
+                <textarea name="MoTa" class="form-control" rows="3"></textarea>
+            </div>
+            <button type="submit" class="btn-save" style="background-color: #28c76f; border: none; color: white; padding: 10px; width: 100%; border-radius: 8px;">Lưu danh mục</button>
+        </form>
+    </div>
+
+    <div class="table-card shadow-light">
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>STT</th>
+                    <th>TÊN DANH MỤC</th>
+                    <th class="text-end">HÀNH ĐỘNG</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% categories.forEach((cat, index) => { %>
+                <tr>
+                    <td><%= index + 1 %></td>
+                    <td><strong class="text-dark"><%= cat.TenDanhMuc %></strong></td>
+                    <td class="text-end action-btns">
+                        <a href="#" class="edit me-3" data-bs-toggle="modal" data-bs-target="#editModal<%= cat._id %>" title="Sửa">
+                            <i class="fa-solid fa-pen-to-square" style="color: #ff9f43; font-size: 1.2rem;"></i>
+                        </a>
+
+                        <a href="/admin/danhmuc/delete/<%= cat._id %>" 
+                           class="delete" 
+                           onclick="return confirm('Bạn có chắc chắn muốn xóa danh mục này?')" title="Xóa">
+                            <i class="fa-solid fa-trash-can" style="color: #ea5455; font-size: 1.2rem;"></i>
+                        </a>
+
+                        <div class="modal fade" id="editModal<%= cat._id %>" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content" style="border-radius: 15px; color: #333;">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="editModalLabel">Chỉnh sửa danh mục</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <form action="/admin/danhmuc/update/<%= cat._id %>" method="POST">
+                                        <div class="modal-body text-start">
+                                            <div class="mb-3">
+                                                <label class="form-label fw-bold">Tên danh mục</label>
+                                                <input type="text" name="TenDanhMuc" class="form-control" value="<%= cat.TenDanhMuc %>" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label fw-bold">Mô tả</label>
+                                                <textarea name="MoTa" class="form-control" rows="3"><%= cat.MoTa %></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                                            <button type="submit" class="btn btn-primary" style="background-color: #ff4d7d; border: none;">Cập nhật thay đổi</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <% }) %>
+
+                <% if (categories.length === 0) { %>
+                    <tr><td colspan="3" class="text-center text-muted py-4">Chưa có danh mục nào được tạo.</td></tr>
+                <% } %>
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,87 @@
+<div class="container my-5">
+    <div class="card shadow border-0" style="border-radius: 20px;">
+        <div class="card-header bg-white py-3">
+            <h3 class="mb-0" style="color: #ff4d7d;">
+                <i class="fa-solid fa-receipt"></i> Chi tiết đơn hàng #<%= order._id.toString().toUpperCase().slice(-6) %>
+            </h3>
+        </div>
+        <div class="card-body">
+            <% if (order) { %>
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <h5>Trạng thái: 
+                            <% 
+                                let badgeClass = 'bg-secondary';
+                                if(order.TrangThai === 'pending') badgeClass = 'bg-warning text-dark';
+                                if(order.TrangThai === 'shipping') badgeClass = 'bg-info';
+                                if(order.TrangThai === 'delivered') badgeClass = 'bg-success';
+                                if(order.TrangThai === 'cancelled') badgeClass = 'bg-danger';
+                            %>
+                            <span class="badge <%= badgeClass %>">
+                                <%= order.TrangThai %>
+                            </span>
+                        </h5>
+                        <p class="text-muted">Ngày đặt: <%= order.createdAt ? order.createdAt.toLocaleString('vi-VN') : 'N/A' %></p>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table align-middle">
+                        <thead>
+                            <tr>
+                                <th>Sản phẩm</th>
+                                <th>Tên bánh</th>
+                                <th class="text-center">Số lượng</th>
+                                <th class="text-end">Giá</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% order.DanhSachSanPham.forEach(item => { %>
+                                <tr>
+                                    <td style="width: 100px;">
+                                        <img src="<%= (item.SanPham && item.SanPham.HinhAnh) ? item.SanPham.HinhAnh : '/images/no-image.png' %>" 
+                                             class="img-fluid rounded" style="max-height: 80px; object-fit: cover;">
+                                    </td>
+                                    <td>
+                                        <h6 class="mb-0"><%= item.SanPham ? item.SanPham.TenSanPham : 'Sản phẩm đã ngừng kinh doanh' %></h6>
+                                    </td>
+                                    <td class="text-center">x<%= item.SoLuong %></td>
+                                    <td class="text-end text-danger fw-bold">
+                                        <%= (item.Gia || (item.SanPham ? item.SanPham.Gia : 0)).toLocaleString('vi-VN') %> VNĐ
+                                    </td>
+                                </tr>
+                            <% }) %>
+                        </tbody>
+                    </table>
+                </div>
+
+                <hr>
+                <div class="d-flex justify-content-between align-items-center">
+                    <h4 class="fw-bold">Tổng thanh toán:</h4>
+                    <h4 class="text-danger fw-bold">
+                        <%= (order.TongTien || 0).toLocaleString('vi-VN') %> VNĐ
+                    </h4>
+                </div>
+
+                <div class="mt-4">
+                    <a href="/donhang" class="btn btn-outline-secondary">
+                        <i class="fa-solid fa-chevron-left"></i> Quay lại lịch sử
+                    </a>
+                    
+                    <% if (order.TrangThai === 'pending') { %>
+                        <form action="/donhang/cancel/<%= order._id %>" method="POST" class="d-inline ms-2">
+                            <button type="submit" class="btn btn-danger" onclick="return confirm('Bạn có thực sự muốn hủy đơn hàng này không?')">
+                                <i class="fa-solid fa-xmark"></i> Hủy đơn hàng
+                            </button>
+                        </form>
+                    <% } %>
+                </div>
+            <% } else { %>
+                <div class="text-center py-5">
+                    <p>Không tìm thấy dữ liệu đơn hàng.</p>
+                    <a href="/donhang" class="btn btn-primary">Quay lại</a>
+                </div>
+            <% } %>
+        </div>
+    </div>
+</div>

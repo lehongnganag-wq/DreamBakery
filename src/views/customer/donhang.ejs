@@ -1,0 +1,106 @@
+<%
+// Đảm bảo orders là một mảng để tránh lỗi vòng lặp
+const displayOrders = Array.isArray(orders) ? orders : [];
+%>
+
+<div class="order-container">
+    <h2 class="order-title">
+         Lịch sử đặt hàng
+    </h2>
+
+    <table class="order-table">
+        <thead>
+            <tr>
+                <th>STT</th>
+                <th>Mã đơn</th>
+                <th>Ngày đặt</th>
+                <th>Tổng tiền</th>
+                <th>Thanh toán</th>
+                <th>Tình trạng</th>
+                <th>Trạng thái</th>
+                <th class="text-center">Thao tác</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        <% if (displayOrders.length > 0) { %>
+            <% displayOrders.forEach((order, index) => { 
+                let statusClass = "";
+                let statusText = "";
+
+                switch(order.TrangThai){
+                    case "shipping":
+                        statusClass = "status-shipping";
+                        statusText = "Đang giao";
+                        break;
+                    case "delivered":
+                        statusClass = "status-done";
+                        statusText = "Hoàn tất";
+                        break;
+                    case "cancelled":
+                        statusClass = "status-cancel";
+                        statusText = "Đã hủy";
+                        break;
+                    default:
+                        statusClass = "status-pending";
+                        statusText = "Chờ xử lý";
+                }
+            %>
+
+            <tr>
+                <td><%= index + 1 %></td>
+
+                <td class="order-id">#<%= order._id.toString().slice(-6).toUpperCase() %></td>
+
+                <td>
+                    <%= order.createdAt 
+                        ? new Date(order.createdAt).toLocaleDateString('vi-VN') 
+                        : '---' %>
+                </td>
+
+                <td class="price-cell">
+                    <%= (order.TongTien || 0).toLocaleString() %>đ
+                </td>
+
+                <td>
+                    <%= order.PhuongThucThanhToan === 'Chuyển khoản' ? 'CK' : 'TM' %>
+                </td>
+
+                <td>
+                    <% if(order.DaThanhToan){ %>
+                        <span class="text-paid">Đã trả</span>
+                    <% } else { %>
+                        <span class="text-unpaid">Chưa trả</span>
+                    <% } %>
+                </td>
+
+                <td>
+                    <span class="status-badge <%= statusClass %>">
+                        <%= statusText %>
+                    </span>
+                </td>
+
+                <td class="text-center action-links">
+                    <a href="/donhang/<%= order._id %>" class="btn-detail">Xem</a>
+
+                    <% if(order.TrangThai === "pending"){ %>
+                        <span class="divider">|</span>
+                        <a href="/donhang/cancel/<%= order._id %>" 
+                           class="btn-cancel"
+                           onclick="return confirm('Bạn có chắc chắn muốn hủy đơn hàng này?')">
+                            Hủy
+                        </a>
+                    <% } %>
+                </td>
+            </tr>
+            <% }) %>
+        <% } else { %>
+            <tr>
+                <td colspan="8" class="empty-row">
+                    Bạn chưa có đơn hàng nào. <a href="/sanpham">Mua sắm ngay!</a>
+                </td>
+            </tr>
+        <% } %>
+        </tbody>
+    </table>
+</div>
