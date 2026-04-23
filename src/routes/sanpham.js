@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const sanphamController = require("../controllers/sanphamControllers"); // Trỏ đúng file ở trên
+const sanphamController = require("../controllers/sanphamControllers");
 
 router.get("/", sanphamController.getSanpham);
 

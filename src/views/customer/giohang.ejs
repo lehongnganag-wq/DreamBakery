@@ -135,16 +135,15 @@
         window.scrollTo({ top: 300, behavior: 'smooth' });
     }
 
-    // DANH SÁCH MÃ GIẢM GIÁ ĐƯỢC CHẤP NHẬN
     const VALID_COUPONS = {
-        "HEVUIIVE": 20, // Giảm 20%
+        "HEVUIIVE": 20, 
         "DREAM": 10,
         "GIAM50": 50
     };
 
     function applyCoupon() {
         const input = document.getElementById('couponCode');
-        const code = input.value.trim().toUpperCase(); // Chuyển sang chữ hoa để so sánh
+        const code = input.value.trim().toUpperCase(); 
         const msg = document.getElementById('couponMsg');
         const subtotal = parseInt('<%= total %>');
 
@@ -153,18 +152,17 @@
             const discountAmount = (subtotal * percent) / 100;
             const finalTotal = subtotal - discountAmount;
 
-            // Cập nhật giao diện tiền tệ
             document.getElementById('discountText').innerText = "- " + discountAmount.toLocaleString() + " đ";
             document.getElementById('finalTotalDisplay').innerText = finalTotal.toLocaleString() + " đ";
             document.getElementById('discountValueInput').value = discountAmount;
 
             msg.className = "small mt-2 fw-bold text-success";
-            msg.innerText = "✓ Mã " + code + " đã được ghi nhận! (Giảm " + percent + "%)";
+            msg.innerText = " Mã " + code + " đã được ghi nhận! (Giảm " + percent + "%)";
         } else {
             msg.className = "small mt-2 fw-bold text-danger";
-            msg.innerText = "✘ Mã này không đúng hoặc đã hết hạn!";
+            msg.innerText = " Mã này không đúng hoặc đã hết hạn!";
             
-            // Reset lại số tiền nếu nhập sai
+            
             document.getElementById('discountText').innerText = "- 0 đ";
             document.getElementById('finalTotalDisplay').innerText = subtotal.toLocaleString() + " đ";
             document.getElementById('discountValueInput').value = 0;
