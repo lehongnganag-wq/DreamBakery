@@ -3,7 +3,7 @@ const {
   getGiohang,
   add,
   updateQuantity,
-  removeItem
+  removeItem 
 } = require("../controllers/giohangControllers");
 
 const auth = require("../middleware/auth");
@@ -16,6 +16,6 @@ router.post("/add/:id", add);
 
 router.post("/update", updateQuantity);
 
-router.get("/remove/:productId", giohangController.removeItem);
+router.get("/remove/:productId", removeItem);
 
 module.exports = router;
