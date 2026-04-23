@@ -20,17 +20,16 @@
                                     <th>Giá</th>
                                     <th style="width: 140px;">Số lượng</th>
                                     <th>Thành tiền</th>
-                                    <th></th>
-                                </tr>
+                                    <th class="text-center">Xóa</th> </tr>
                             </thead>
                             <tbody>
                                 <% cart.items.forEach(item => { %>
-                                    <%# Tính toán tổng tiền ngay tại đây để cập nhật khi xóa/sửa %>
                                     <% total += item.product.price * item.quantity; %>
                                     <tr>
                                         <td class="ps-4">
                                             <div class="d-flex align-items-center py-2">
-                                                <img src="<%= item.product.HinhAnh %>" 
+                                                <%# Sửa đường dẫn ảnh thành /images/ nếu ảnh không hiện %>
+                                                <img src="/images/<%= item.product.HinhAnh %>" 
                                                      class="rounded-3"
                                                      style="width: 70px; height: 70px; object-fit: cover;"
                                                      onerror="this.src='https://placehold.co/70x70?text=Dream+Bakery'">
@@ -51,11 +50,11 @@
                                         <td class="text-danger fw-bold">
                                             <%= (item.product.price * item.quantity).toLocaleString() %>đ
                                         </td>
-                                        <td class="pe-4 text-end">
-                                            <%# Nút Xóa sản phẩm liên kết với Controller %>
+                                        <td class="text-center">
+                                            <%# Nút Xóa sản phẩm liên kết chính xác với Route %>
                                             <a href="/giohang/remove/<%= item.product._id %>" 
                                                class="text-danger fs-5" 
-                                               onclick="return confirm('Bạn có chắc muốn bỏ bánh này không?')">
+                                               onclick="return confirm('Bạn có chắc muốn bỏ bánh này khỏi giỏ hàng không?')">
                                                 <i class="fa-solid fa-trash-can"></i>
                                             </a>
                                         </td>
@@ -183,4 +182,6 @@
 
 <style>
     .border-dashed { border-style: dashed !important; }
+    
+    tbody tr:hover { background-color: #fff9fa; transition: 0.3s; }
 </style>
