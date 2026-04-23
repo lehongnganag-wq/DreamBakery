@@ -37,7 +37,7 @@ exports.getGiohang = async (req, res) => {
             layout: "layout"
         });
     } catch (error) {
-        console.error("🔥 Lỗi lấy giỏ hàng:", error);
+        console.error("Lỗi lấy giỏ hàng:", error);
         res.render("customer/giohang", {
             title: "Giỏ hàng",
             cart: { items: [], totalAmount: 0 },

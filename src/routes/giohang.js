@@ -16,6 +16,6 @@ router.post("/add/:id", add);
 
 router.post("/update", updateQuantity);
 
-router.get("/remove/:productId", removeItem);
+router.get("/remove/:productId", giohangController.removeItem);
 
 module.exports = router;

@@ -1,5 +1,4 @@
-<%# Sử dụng totalAmount từ Controller gửi sang, hoặc tự tính nếu không có %>
-<% let total = cart.totalAmount || 0; %>
+<% let total = 0; %>
 
 <div class="container mt-5 mb-5">
     <div class="row g-4">
@@ -19,17 +18,18 @@
                                 <tr>
                                     <th class="ps-4 py-3">Bánh</th>
                                     <th>Giá</th>
-                                    <th style="width: 150px;">Số lượng</th>
+                                    <th style="width: 140px;">Số lượng</th>
                                     <th>Thành tiền</th>
                                     <th></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <% cart.items.forEach(item => { %>
+                                    <%# Tính toán tổng tiền ngay tại đây để cập nhật khi xóa/sửa %>
+                                    <% total += item.product.price * item.quantity; %>
                                     <tr>
                                         <td class="ps-4">
                                             <div class="d-flex align-items-center py-2">
-                                                <%# Bổ sung logic đường dẫn ảnh an toàn %>
                                                 <img src="<%= item.product.HinhAnh %>" 
                                                      class="rounded-3"
                                                      style="width: 70px; height: 70px; object-fit: cover;"
@@ -45,16 +45,14 @@
                                                 <input type="hidden" name="productId" value="<%= item.product._id %>">
                                                 <input type="number" name="quantity" value="<%= item.quantity %>" min="1" 
                                                        class="form-control form-control-sm text-center" style="width: 60px;">
-                                                <button class="btn btn-danger btn-sm ms-2" type="submit" title="Cập nhật">
-                                                    <i class="fa-solid fa-rotate"></i>
-                                                </button>
+                                                <button class="btn btn-danger btn-sm ms-1" type="submit" style="background-color: #ff4d7d; border: none;">Lưu</button>
                                             </form>
                                         </td>
                                         <td class="text-danger fw-bold">
                                             <%= (item.product.price * item.quantity).toLocaleString() %>đ
                                         </td>
                                         <td class="pe-4 text-end">
-                                            <%# Link xóa sản phẩm khớp với Route %>
+                                            <%# Nút Xóa sản phẩm liên kết với Controller %>
                                             <a href="/giohang/remove/<%= item.product._id %>" 
                                                class="text-danger fs-5" 
                                                onclick="return confirm('Bạn có chắc muốn bỏ bánh này không?')">
@@ -70,7 +68,7 @@
 
                 <div class="text-end mt-4">
                     <span class="text-muted fw-bold">TỔNG TIỀN:</span>
-                    <h2 class="fw-bold text-danger m-0" id="subtotalDisplay"><%= total.toLocaleString() %> đ</h2>
+                    <h2 class="fw-bold text-danger m-0"><%= total.toLocaleString() %> đ</h2>
                     <button onclick="toggleCheckout()" class="btn btn-lg px-5 mt-3 text-white fw-bold shadow" 
                             style="background: #ff4d7d; border-radius: 50px; border:none;">
                         THANH TOÁN NGAY
@@ -78,14 +76,12 @@
                 </div>
             <% } else { %>
                 <div class="text-center py-5">
-                    <img src="https://cdn-icons-png.flaticon.com/512/11329/11329060.png" width="150" class="mb-3 opacity-50">
                     <h4 class="text-muted">Giỏ hàng của bạn đang trống</h4>
                     <a href="/sanpham" class="btn btn-danger mt-3" style="border-radius: 50px;">Đi mua bánh ngay</a>
                 </div>
             <% } %>
         </div>
 
-        <%# Phần Form thanh toán bên phải %>
         <div class="col-lg-4" id="checkout-right-section" style="display: none;">
             <div class="card shadow-lg border-0" style="border-radius: 25px;">
                 <div class="p-4 text-center text-white" style="background: #ffa500; border-radius: 25px 25px 0 0;">
@@ -148,9 +144,8 @@
 
 <script>
     function toggleCheckout() {
-        const section = document.getElementById('checkout-right-section');
-        section.style.display = 'block';
-        section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        document.getElementById('checkout-right-section').style.display = 'block';
+        window.scrollTo({ top: 300, behavior: 'smooth' });
     }
 
     const VALID_COUPONS = {
@@ -175,10 +170,10 @@
             document.getElementById('discountValueInput').value = discountAmount;
 
             msg.className = "small mt-2 fw-bold text-success";
-            msg.innerText = "Mã " + code + " hợp lệ! Giảm " + percent + "%";
+            msg.innerText = " Mã " + code + " đã được ghi nhận! (Giảm " + percent + "%)";
         } else {
             msg.className = "small mt-2 fw-bold text-danger";
-            msg.innerText = "Mã không hợp lệ hoặc hết hạn!";
+            msg.innerText = " Mã này không đúng hoặc đã hết hạn!";
             document.getElementById('discountText').innerText = "- 0 đ";
             document.getElementById('finalTotalDisplay').innerText = subtotal.toLocaleString() + " đ";
             document.getElementById('discountValueInput').value = 0;
@@ -188,6 +183,4 @@
 
 <style>
     .border-dashed { border-style: dashed !important; }
-    .table thead th { font-weight: 700; text-transform: uppercase; font-size: 0.85rem; }
-    .btn-warning:hover { background: #e69500 !important; }
 </style>
