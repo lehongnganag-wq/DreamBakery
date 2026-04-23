@@ -1,14 +1,21 @@
 const router = require("express").Router();
 const {
-  getAllSanpham,
-  getSanphamDetail,
-  getSanphamByDanhmuc
-} = require("../controllers/sanphamControllers");
+  getGiohang,
+  add,
+  updateQuantity,
+  removeItem
+} = require("../controllers/giohangControllers");
 
-router.get("/", getAllSanpham);
+const auth = require("../middleware/auth");
 
-router.get("/detail/:id", getSanphamDetail);
+router.use(auth);
 
-router.get("/danhmuc/:danhmucId", getSanphamByDanhmuc);
+router.get("/", getGiohang);
+
+router.post("/add/:id", add); 
+
+router.post("/update", updateQuantity);
+
+router.get("/remove/:productId", removeItem);
 
 module.exports = router;

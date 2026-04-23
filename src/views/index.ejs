@@ -12,11 +12,11 @@
                     <div class="col-md-4 mb-4">
                         <div class="card h-100 shadow-sm border-0" style="border-radius: 15px; overflow: hidden;">
                             
-                            <img src="<%= item.HinhAnh %>" 
+                            <img src="/images/<%= item.HinhAnh %>" 
                                  class="card-img-top" 
                                  alt="<%= item.TenSanPham %>"
                                  style="height: 250px; object-fit: cover;"
-                                 onerror="this.onerror=null; this.src='https://placehold.co/600x400?text=Loi+Anh+Thuc+Te';">
+                                 onerror="this.onerror=null; this.src='https://placehold.co/600x400?text=Dream+Bakery';">
                             
                             <div class="card-body text-center">
                                 <h4 class="fw-bold"><%= item.TenSanPham %></h4>
@@ -25,11 +25,18 @@
                                     <%= (item.Gia || 0).toLocaleString() %> VNĐ
                                 </p>
                                 
-                                <form action="/giohang/add" method="POST"> 
-                                    <input type="hidden" name="productId" value="<%= item._id %>">
-                                    <button type="submit" class="btn btn-primary w-100" style="background-color: #ff4d7d; border: none; padding: 10px;">
-                                        <i class="fa-solid fa-cart-plus"></i> Thêm vào giỏ
-                                    </button>
+                                <form action="/giohang/add/<%= item._id %>" method="POST"> 
+                                    <input type="hidden" name="quantity" value="1">
+                                    
+                                    <div class="d-grid gap-2">
+                                        <button type="submit" class="btn btn-primary" style="background-color: #ff4d7d; border: none; padding: 10px;">
+                                            <i class="fa-solid fa-cart-plus"></i> Thêm vào giỏ
+                                        </button>
+                                        
+                                        <a href="/sanpham/detail/<%= item._id %>" class="btn btn-outline-secondary btn-sm">
+                                            Xem chi tiết
+                                        </a>
+                                    </div>
                                 </form>
                             </div>
                         </div>
