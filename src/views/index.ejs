@@ -25,7 +25,7 @@
                                     <%= (item.Gia || 0).toLocaleString() %> VNĐ
                                 </p>
                                 
-                                <form action="/cart/add" method="POST"> 
+                                <form action="/giohang/add" method="POST"> 
                                     <input type="hidden" name="productId" value="<%= item._id %>">
                                     <button type="submit" class="btn btn-primary w-100" style="background-color: #ff4d7d; border: none; padding: 10px;">
                                         <i class="fa-solid fa-cart-plus"></i> Thêm vào giỏ
