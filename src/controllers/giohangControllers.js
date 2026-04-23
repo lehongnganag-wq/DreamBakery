@@ -6,16 +6,28 @@ exports.getGiohang = async (req, res) => {
         const items = await Giohang.find({ NguoiDung: req.user.id }).populate("SanPham");
         const coupons = await KhuyenMai.find({ TrangThai: true });
 
+        let totalAmount = 0;
+
         const cart = {
-            items: items.map(i => ({
-                product: {
-                    _id: i.SanPham._id,
-                    name: i.SanPham.TenSanPham,
-                    price: i.SanPham.Gia,
-                    HinhAnh: i.SanPham.HinhAnh 
-                },
-                quantity: i.SoLuong
-            }))
+            items: items.map(i => {
+                
+                const price = i.SanPham ? i.SanPham.Gia : 0;
+                const quantity = i.SoLuong || 0;
+                
+                
+                totalAmount += price * quantity;
+
+                return {
+                    product: {
+                        _id: i.SanPham ? i.SanPham._id : null,
+                        name: i.SanPham ? i.SanPham.TenSanpham : "Sản phẩm đã ngừng bán",
+                        price: price,
+                        HinhAnh: i.SanPham ? i.SanPham.HinhAnh : ""
+                    },
+                    quantity: quantity
+                };
+            }),
+            totalAmount: totalAmount 
         };
 
         res.render("customer/giohang", {
@@ -25,10 +37,10 @@ exports.getGiohang = async (req, res) => {
             layout: "layout"
         });
     } catch (error) {
-        console.error("Lỗi lấy giỏ hàng:", error);
+        console.error("🔥 Lỗi lấy giỏ hàng:", error);
         res.render("customer/giohang", {
             title: "Giỏ hàng",
-            cart: { items: [] },
+            cart: { items: [], totalAmount: 0 },
             coupons: [],
             layout: "layout"
         });
@@ -37,7 +49,6 @@ exports.getGiohang = async (req, res) => {
 
 exports.add = async (req, res) => {
     try {
-        
         const productId = req.params.id; 
         const { quantity } = req.body; 
         const qty = parseInt(quantity) || 1;
@@ -60,10 +71,11 @@ exports.add = async (req, res) => {
         
         res.redirect("/giohang");
     } catch (error) {
-        console.error("Lỗi thêm giỏ hàng:", error);
+        console.error(" Lỗi thêm giỏ hàng:", error);
         res.status(500).send("Lỗi thêm giỏ hàng");
     }
 };
+
 
 exports.updateQuantity = async (req, res) => {
     try {
@@ -83,19 +95,23 @@ exports.updateQuantity = async (req, res) => {
         }
         res.redirect("/giohang");
     } catch (error) {
+        console.error(" Lỗi cập nhật giỏ hàng:", error);
         res.status(500).send("Lỗi cập nhật giỏ hàng");
     }
 };
 
 exports.removeItem = async (req, res) => {
     try {
+   
         const { productId } = req.params;
+        
         await Giohang.deleteOne({
             NguoiDung: req.user.id,
             SanPham: productId
         });
         res.redirect("/giohang");
     } catch (error) {
+        console.error("🔥 Lỗi xoá món hàng:", error);
         res.status(500).send("Lỗi xoá món hàng");
     }
 };
