@@ -4,14 +4,17 @@ const KhuyenMai = require("../models/khuyenmai");
 exports.getGiohang = async (req, res) => {
     try {
         const items = await Giohang.find({ NguoiDung: req.user.id }).populate("SanPham");
-        const coupons = await KhuyenMai.find({ TrangThai: true }); // Khớp TrangThai
+        const coupons = await KhuyenMai.find({ TrangThai: true });
 
         let totalAmount = 0;
 
         const cart = {
             items: items.map(i => {
+                
                 const price = i.SanPham ? i.SanPham.Gia : 0;
                 const quantity = i.SoLuong || 0;
+                
+                
                 totalAmount += price * quantity;
 
                 return {
@@ -27,15 +30,10 @@ exports.getGiohang = async (req, res) => {
             totalAmount: totalAmount 
         };
 
-        // Lấy lỗi từ session nếu có
-        const error = req.session.voucherError || null;
-        delete req.session.voucherError;
-
         res.render("customer/giohang", {
             title: "Giỏ hàng của bạn",
             cart,
             coupons,
-            error, // Truyền biến error ra view
             layout: "layout"
         });
     } catch (error) {
@@ -46,46 +44,6 @@ exports.getGiohang = async (req, res) => {
             coupons: [],
             layout: "layout"
         });
-    }
-};
-
-// --- PHẦN BỔ SUNG: HÀM ÁP DỤNG MÃ GIẢM GIÁ ---
-exports.applyVoucher = async (req, res) => {
-    try {
-        const { voucherCode } = req.body;
-        const code = voucherCode ? voucherCode.trim().toUpperCase() : "";
-
-        // Tìm mã khớp với Database
-        const voucher = await KhuyenMai.findOne({ 
-            MaCode: code,             // Trường MaCode
-            TrangThai: true,          // Trường TrangThai
-            NgayBatDau: { $lte: new Date() },
-            NgayKetThuc: { $gte: new Date() }
-        });
-
-        if (!voucher) {
-            req.session.voucherError = "Mã này không đúng hoặc đã hết hạn!";
-            return res.redirect("/giohang");
-        }
-
-        // Kiểm tra đơn tối thiểu (ví dụ trường GiaTriToiThieu trong DB)
-        const items = await Giohang.find({ NguoiDung: req.user.id }).populate("SanPham");
-        const currentTotal = items.reduce((sum, i) => sum + (i.SanPham ? i.SanPham.Gia * i.SoLuong : 0), 0);
-
-        if (currentTotal < voucher.GiaTriToiThieu) {
-            req.session.voucherError = `Đơn hàng tối thiểu phải từ ${voucher.GiaTriToiThieu.toLocaleString()}đ`;
-            return res.redirect("/giohang");
-        }
-
-        // Lưu thông tin giảm giá vào session để xử lý tiếp ở trang thanh toán
-        req.session.discountAmount = voucher.PhanTramGiam > 0 
-            ? (currentTotal * voucher.PhanTramGiam / 100) 
-            : voucher.SoTienGiam;
-        
-        res.redirect("/giohang");
-    } catch (error) {
-        console.error("Lỗi voucher:", error);
-        res.redirect("/giohang");
     }
 };
 
@@ -144,6 +102,7 @@ exports.updateQuantity = async (req, res) => {
 
 exports.removeItem = async (req, res) => {
     try {
+   
         const { productId } = req.params;
         
         await Giohang.deleteOne({
