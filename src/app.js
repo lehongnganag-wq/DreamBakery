@@ -13,8 +13,8 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// THÊM DÒNG NÀY VÀO (Đúng với cấu trúc src/public của bạn)
-app.use(express.static(path.join(__dirname, "src", "public")));
+
+app.use(express.static(path.join(process.cwd(), "src", "public")));
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
